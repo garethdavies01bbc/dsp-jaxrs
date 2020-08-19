@@ -1,0 +1,23 @@
+
+# /
+/Gemfile.lock
+/.settings
+/target
+/.classpath
+/.project
+/.idea
+/*.iml
+
+.DS_Store
+
+# /cucumber/
+/cucumber/run_cucumber_tests.sh
+/cucumber/target
+
+# /cucumber/features/support/expected/commentary-item/
+
+# /cucumber/features/support/fixtures/commentary-item/
+
+# /src/main/java/bbc/forge/content/parser/commentaryitem/
+
+svn-git-migration-scripts
