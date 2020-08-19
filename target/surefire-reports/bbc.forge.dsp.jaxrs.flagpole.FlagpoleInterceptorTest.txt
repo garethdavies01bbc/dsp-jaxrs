@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: bbc.forge.dsp.jaxrs.flagpole.FlagpoleInterceptorTest
--------------------------------------------------------------------------------
-Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.04 sec

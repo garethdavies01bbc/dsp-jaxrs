@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: bbc.forge.dsp.jaxrs.JaxRsResponseHandlerTest
--------------------------------------------------------------------------------
-Tests run: 37, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.992 sec
