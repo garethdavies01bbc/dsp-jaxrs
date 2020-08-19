@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: org.apache.activemq:activemq-ra:5.3.0.5-fuse">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/activemq/activemq-ra/5.3.0.5-fuse/activemq-ra-5.3.0.5-fuse.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/activemq/activemq-ra/5.3.0.5-fuse/activemq-ra-5.3.0.5-fuse-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/activemq/activemq-ra/5.3.0.5-fuse/activemq-ra-5.3.0.5-fuse-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

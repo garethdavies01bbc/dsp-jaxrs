@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: bbc.forge.dsp:dsp-common:1.1.57-SNAPSHOT">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/bbc/forge/dsp/dsp-common/1.1.57-SNAPSHOT/dsp-common-1.1.57-SNAPSHOT.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/bbc/forge/dsp/dsp-common/1.1.57-SNAPSHOT/dsp-common-1.1.57-SNAPSHOT-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/bbc/forge/dsp/dsp-common/1.1.57-SNAPSHOT/dsp-common-1.1.57-SNAPSHOT-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
