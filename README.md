@@ -6,8 +6,19 @@ The basic idea for this work is to remove the old dependency cxf-bundle-jaxrs an
 
 So far these classes have been migrated along with the accompanying tests:
 
-HttpRequestMonitor  - now uses ContainerRequestContext and ContainerResponseContext
-HttpResponseMonitor - now uses ContainerRequestFilter
+HttpRequestMonitor  - now uses ContainerRequestContext and ContainerResponseContext.
+HttpResponseMonitor - now uses ContainerRequestFilter.
+MemcacheStatusFilter - now uses ContainerResponseFilter and ContainerRequest/ResponseContext.
+
+Classes still to migrate:
+
+- AbstractHttpRequestCertificateAuth
+- AuditLogger
+- HappyMetricFilter
+- HttpResponseVersionProvider
+- Caching500ErrorsForARevalidationPreventer
+- CustomWADLGenerator
+- HttpRequestProductionGatewayCertificateAuth
 
 There is a new dependency cxf-rt-frontend-jaxrs 3.2.0 which handles the Monitor classes mentions above.
 

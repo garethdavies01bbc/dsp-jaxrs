@@ -1,29 +1,30 @@
 package bbc.forge.dsp.jaxrs;
 
 import bbc.forge.dsp.common.AsynchronousListenerWrapper;
-import org.apache.cxf.jaxrs.ext.RequestHandler;
-import org.apache.cxf.jaxrs.model.ClassResourceInfo;
-import org.apache.cxf.message.Message;
-
-import javax.ws.rs.core.Response;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
 
 /**
  * User: iviec01
  * Date: 01/02/2012
  * Time: 10:24
  */
-public class MemcacheStatusFilter implements RequestHandler {
+public class MemcacheStatusFilter implements ContainerResponseFilter {
 
     private AsynchronousListenerWrapper asynchronousListenerWrapper;
 
     @Override
-    public Response handleRequest(Message message, ClassResourceInfo classResourceInfo) {
+    public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) {
 
         if (!asynchronousListenerWrapper.isServiceDependencyWorking()) {
-            return Response.status(500).entity("Memcached is down...").build();
-        }
-        return null;
+            System.out.println("Starting status code:" + containerResponseContext.getStatus());
 
+            containerResponseContext.setStatus(500);
+            containerResponseContext.setEntity("Memcached is down...");
+
+            System.out.println("Ending status code:" + containerResponseContext.getStatus());
+        }
     }
 
     public void setAsynchronousListenerWrapper(AsynchronousListenerWrapper asynchronousListenerWrapper) {

@@ -6,7 +6,7 @@ import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import javax.ws.rs.core.Response;
+import javax.ws.rs.container.ContainerResponseContext;
 
 import org.apache.cxf.jaxrs.model.ClassResourceInfo;
 import org.apache.cxf.message.Message;
@@ -33,6 +33,8 @@ public class MemcacheStatusFilterTest {
     private Message mockMessage;
     @Mock
     private ClassResourceInfo mockClassResourceInfo;
+    @Mock
+    private ContainerResponseContext mockResponse;
 
     @Before
     public void setUp() throws Exception {
@@ -45,35 +47,33 @@ public class MemcacheStatusFilterTest {
 
         when(mockMemcachedListener.isServiceDependencyWorking()).thenReturn(true);
 
-        Response response = memcacheStatusFilter.handleRequest(mockMessage, mockClassResourceInfo);
+        memcacheStatusFilter.filter(null, mockResponse);
 
         verify(mockMemcachedListener).isServiceDependencyWorking();
-        assertNull(response);
-
+        assertNull(mockResponse);
     }
 
     @Test
     public void handleRequestShouldReturnAResponseMessageIfMemcacheIsDown () {
         when(mockMemcachedListener.isServiceDependencyWorking()).thenReturn(false);
 
-        Response response = memcacheStatusFilter.handleRequest(mockMessage, mockClassResourceInfo);
+        memcacheStatusFilter.filter(null, mockResponse);
 
         verify(mockMemcachedListener).isServiceDependencyWorking();
 
-        assertNotNull(response);
-        assertEquals("Memcached is down...", response.getEntity().toString());
+        assertNotNull(mockResponse);
+        assertEquals("Memcached is down...", mockResponse.getEntity().toString());
     }
 
     @Test
     public void handleRequestShouldReturnA500ResponseCodeIfMemcacheIsDown () {
         when(mockMemcachedListener.isServiceDependencyWorking()).thenReturn(false);
 
-        Response response = memcacheStatusFilter.handleRequest(mockMessage, mockClassResourceInfo);
+        memcacheStatusFilter.filter(null, mockResponse);
 
         verify(mockMemcachedListener).isServiceDependencyWorking();
 
-        assertNotNull(response);
-        assertEquals(500, response.getStatus());
+        assertNotNull(mockResponse);
+        assertEquals(500, mockResponse.getStatus());
     }
-
 }
