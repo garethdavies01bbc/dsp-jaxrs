@@ -3,11 +3,16 @@ package bbc.forge.dsp.jaxrs;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Response;
 
 import org.apache.cxf.jaxrs.model.ClassResourceInfo;
 import org.apache.cxf.jaxrs.model.OperationResourceInfo;
 import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.apache.log4j.Logger;
 
 /**
@@ -20,31 +25,30 @@ import org.apache.log4j.Logger;
  *
  * https://confluence.dev.bbc.co.uk/display/prog2012/Caching+policy
  */
-public class Caching500ErrorsForARevalidationPreventer implements org.apache.cxf.jaxrs.ext.ResponseHandler, org.apache.cxf.jaxrs.ext.RequestHandler {
+public class Caching500ErrorsForARevalidationPreventer implements ContainerRequestFilter, ContainerResponseFilter {
 
 	private Logger LOG = Logger.getLogger(this.getClass());
 
 	private ThreadLocal<Boolean> revalidationRequest = new ThreadLocal<Boolean>();
 
 	@Override
-	public Response handleResponse(Message message, OperationResourceInfo info,
-			Response response) {
+	public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) {
 		try {
-			if (response.getStatus() > 499 && revalidationRequest.get() != null && revalidationRequest.get().booleanValue()) {
+			if (containerResponseContext.getStatus() > 499 && revalidationRequest.get() != null && revalidationRequest.get().booleanValue()) {
 				LOG.info("Removing Cache-Control from 5xx response because this is a revalidation request");
-				return Response.fromResponse(response).cacheControl(null).build();
+				containerResponseContext.getHeaders().remove("Cache-Control");
 			}
-		} catch(Throwable t) {
+		} catch (Throwable t) {
 			LOG.error("Error whilst checking for request header " +
 					"If-None-Match and 5xx error and supplied Cache-Control", t);
 		}
-
-		return response;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
-	public Response handleRequest(Message message, ClassResourceInfo info) {
+	public void filter(ContainerRequestContext containerRequestContext) {
+
+		Message message = PhaseInterceptorChain.getCurrentMessage();
+
 		try {
 			revalidationRequest.set(false);
 
@@ -56,8 +60,5 @@ public class Caching500ErrorsForARevalidationPreventer implements org.apache.cxf
 		} catch(Throwable t) {
 			LOG.error("Error whilst checking if revalidation request (If-None-Match is present)", t);
 		}
-
-		return null;
 	}
-
 }
