@@ -8,15 +8,15 @@ So far these classes have been migrated along with the accompanying tests:
 
 HttpRequestMonitor  - now uses ContainerRequestContext and ContainerResponseContext.
 HttpResponseMonitor - now uses ContainerRequestFilter.
-MemcacheStatusFilter - now uses ContainerResponseFilter and ContainerRequest/ResponseContext.
+MemcacheStatusFilter - now uses ContaineRequest/ResponseFilter and ContainerRequest/ResponseContext.
+Caching500ErrorsForARevalidationPreventer - now uses ContainerRequest/ResponseFilter & ContainerRequest/ResponseContext
+AbstractHttpRequestCertificateAuth - now uses ContainerRequestFilter.
+AuditLogger - now uses ContainerRequestFilter & ContainerRequestContext.
+HappyMetricFilter - now uses ContainerResponseFilter & ContainerResponseContext.
+HttpResponseVersionProvider - now uses 
 
 Classes still to migrate:
 
-- AbstractHttpRequestCertificateAuth
-- AuditLogger
-- HappyMetricFilter
-- HttpResponseVersionProvider
-- Caching500ErrorsForARevalidationPreventer
 - CustomWADLGenerator
 - HttpRequestProductionGatewayCertificateAuth
 
