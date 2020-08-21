@@ -13,10 +13,8 @@ public class MemcacheStatusFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) {
 
         if (!asynchronousListenerWrapper.isServiceDependencyWorking()) {
-            System.out.println("Starting status code:" + containerResponseContext.getStatus());
             containerResponseContext.setStatus(500);
             containerResponseContext.setEntity("Memcached is down...");
-            System.out.println("Ending status code:" + containerResponseContext.getStatus());
         }
     }
 

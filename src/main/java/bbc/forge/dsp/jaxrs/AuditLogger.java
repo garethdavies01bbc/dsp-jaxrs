@@ -1,11 +1,11 @@
 package bbc.forge.dsp.jaxrs;
 
-import org.apache.cxf.jaxrs.ext.RequestHandler;
-import org.apache.cxf.jaxrs.model.ClassResourceInfo;
 import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.apache.log4j.Logger;
 
-import javax.ws.rs.core.Response;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerRequestFilter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +13,16 @@ import java.util.Map;
 /**
  * RequestHandler to log out all DELETE requests to the audit.log file.
  */
-public class AuditLogger implements RequestHandler {
+public class AuditLogger implements ContainerRequestFilter {
 
     private Logger log = Logger.getLogger("AuditLogger");
 
     @SuppressWarnings("unchecked")
     @Override
-    public Response handleRequest(Message message, ClassResourceInfo classResourceInfo) {
+    public void filter(ContainerRequestContext containerRequestContext) {
+
+        Message message = PhaseInterceptorChain.getCurrentMessage();
+
         Object method = message.get(Message.HTTP_REQUEST_METHOD);
         if ("DELETE".equals(method)) {
             Object url = message.get(Message.REQUEST_URL);
@@ -41,7 +44,6 @@ public class AuditLogger implements RequestHandler {
                 log.info(method + " " + url + " " + email);
             }
         }
-        return null;
     }
 
     private HashMap<String, String> parseSubject(String subject) {
