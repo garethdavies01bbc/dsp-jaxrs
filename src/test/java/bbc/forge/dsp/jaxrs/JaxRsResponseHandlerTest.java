@@ -76,7 +76,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		when(configuration.getMaxAge500()).thenReturn(5);
 		Response response = responseHandler.handleException(new Exception("Reason"), null);
 		assertEquals(500, response.getStatus());
-		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 
 	@Test
@@ -85,7 +85,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		Response response = responseHandler.handleException(
 				new ValidationSchemaFileException(VALIDATION_ERROR_TYPE.INVALID_SCHEMA, "Reason"), null);
 
-		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0).toString());
 		assertEquals(500, response.getStatus());
 	}
 
@@ -96,7 +96,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 				new InvalidDescriptorException("Reason"), null);
 
 		assertEquals(500, response.getStatus());
-		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 
 	@Test
@@ -106,7 +106,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 				new InvalidApiConfigException("Reason"), null);
 
 		assertEquals(500, response.getStatus());
-		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0).toString());
 
 		verify(jaxRsStats).incrementInvalidApiConfig();
 	}
@@ -181,7 +181,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		Response response = responseHandler.handleException(new ResourceNotFoundException("error"), null);
 
 		assertEquals(404, response.getStatus());
-		assertEquals("no-transform,max-age=60", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=60", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 
 
@@ -198,7 +198,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 					.build());
 
 		assertEquals(404, response.getStatus());
-		assertEquals("no-transform,max-age=1234", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=1234", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 
 	@Test
@@ -213,7 +213,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 					.build());
 
 		assertEquals(500, response.getStatus());
-		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 
 	@Test
@@ -221,7 +221,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		Response response = responseHandler.handleException(new ResourceNotAvailableException("error"), null);
 
 		assertEquals(503, response.getStatus());
-		assertEquals("no-transform,max-age=0", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=0", response.getMetadata().get("Cache-Control").get(0).toString());
 
 		verify(jaxRsStats).incrementResourceNotAvailable();
 	}
@@ -233,7 +233,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 
 		Response response = responseHandler.handleException(new ResourceNotAvailableException("error"), null);
 
-		assertEquals("no-transform,max-age=20", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=20", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 
 	@Test
@@ -253,7 +253,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 				new InvalidDescriptorException("Reason"), null);
 
 		assertEquals(500, response.getStatus());
-		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0).toString());
 		verify(jaxRsStats).incrementInvalidDescriptor();
 	}
 
@@ -273,7 +273,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		Response response =  responseHandler.handleException(new RepositoryFailureException("Reason"), null);
 
 		assertEquals(500, response.getStatus());
-		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=5", response.getMetadata().get("Cache-Control").get(0).toString());
 		verify(jaxRsStats).incrementRepositoryFailure();
 	}
 
@@ -289,9 +289,9 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		assertEquals(200, response.getStatus());
 		assertEquals("resource-data", response.getEntity());
 		assertEquals("no-transform,max-age=30",
-				response.getMetadata().get("Cache-Control").get(0));
+				response.getMetadata().get("Cache-Control").get(0).toString());
 		assertEquals("Accept", response.getMetadata().get("Vary").get(0));
-		assertEquals(resourceRequest.getAccept(), response.getMetadata().get("Content-Type").get(0));
+		assertEquals(resourceRequest.getAccept(), response.getMetadata().get("Content-Type").get(0).toString());
 	}
 
 	@Test
@@ -307,9 +307,9 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		assertEquals(200, response.getStatus());
 		assertEquals("resource-data", response.getEntity());
 		assertEquals("no-transform,max-age=30",
-				response.getMetadata().get("Cache-Control").get(0));
+				response.getMetadata().get("Cache-Control").get(0).toString());
 		assertNull(response.getMetadata().get("Vary"));
-		assertEquals(resourceRequest.getAccept(), response.getMetadata().get("Content-Type").get(0));
+		assertEquals(resourceRequest.getAccept(), response.getMetadata().get("Content-Type").get(0).toString());
 	}
 
 	@Test
@@ -333,7 +333,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 
 		Response response = responseHandler.handleOK(null, resourceRequest, resource);
 
-		assertEquals("text/html", response.getMetadata().get("Content-Type").get(0));
+		assertEquals("text/html", response.getMetadata().get("Content-Type").get(0).toString());
 	}
 
 	@Test
@@ -345,7 +345,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 
 		Response response = responseHandler.handleOK(null, resourceRequest, resource);
 
-		assertEquals("no-transform,max-age=123", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=123", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 
 	@Test
@@ -357,7 +357,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 
 		Response response = responseHandler.handleOK(null, resourceRequest, resource);
 
-		assertEquals("no-transform,max-age=321", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=321", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 	
 	@Test
@@ -373,7 +373,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		when(configuration.getMaxAge200()).thenReturn(123);
 		Response response = responseHandler.handleOK(request, resourceRequest, resource);
 
-		assertEquals("no-transform,max-age=120", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=120", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 	
 	@Test
@@ -389,7 +389,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		when(configuration.getMaxAge200()).thenReturn(123);
 		Response response = responseHandler.handleOK(request, resourceRequest, resource);
 
-		assertEquals("no-transform,max-age=120", response.getMetadata().get("Cache-Control").get(0));
+		assertEquals("no-transform,max-age=120", response.getMetadata().get("Cache-Control").get(0).toString());
 	}
 
 	@Test
@@ -407,7 +407,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		Response response = responseHandler.handleOK(request, resourceRequest, resource);
 
 		assertEquals(200, response.getStatus());
-		assertEquals("\"etag\"", response.getMetadata().get("ETag").get(0));
+		assertEquals("\"etag\"", response.getMetadata().get("ETag").get(0).toString());
 	}
 
 	@Test
@@ -490,7 +490,7 @@ public class JaxRsResponseHandlerTest extends MockitoTestBase {
 		Response response = responseHandler.handleCreated(locationUri);
 
 		assertEquals(201, response.getStatus());
-		assertEquals(locationUri.toString(), response.getMetadata().get("Location").get(0));
+		assertEquals(locationUri.toString(), response.getMetadata().get("Location").get(0).toString());
 	}
 
 	@Test

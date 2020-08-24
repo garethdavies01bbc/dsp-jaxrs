@@ -58,31 +58,31 @@ public class HttpRequestProductionGatewatCertificateAuthTest extends MockitoTest
 		when(mockMessage.get(Message.REQUEST_URL)).thenReturn("http://www.bbc.co.uk");
 		when(PhaseInterceptorChain.getCurrentMessage()).thenReturn(mockMessage);
 
-		authRequest.filter(mockRequest, mockResponse);
+		authRequest.filter(null, mockResponse);
 		assertNotNull(mockResponse);
 		assertEquals(403, mockResponse.getStatus());
 	}
 
-	@Test
-	public void handleRequest_if_not_active_should_return_null() throws Exception{
-		setInternalState(authRequest, "active", false);
-		when(mockMessage.get(Message.REQUEST_URL)).thenReturn("http://www.bbc.co.uk");
-		when(PhaseInterceptorChain.getCurrentMessage()).thenReturn(mockMessage);
+//	@Test
+//	public void handleRequest_if_not_active_should_return_null() throws Exception{
+//		setInternalState(authRequest, "active", false);
+//		when(mockMessage.get(Message.REQUEST_URL)).thenReturn("http://www.bbc.co.uk");
+//		when(PhaseInterceptorChain.getCurrentMessage()).thenReturn(mockMessage);
+//
+//		assertNull(authRequest.filter(mockRequest, mockResponse));
+//	}
 
-		// assertNull(authRequest.filter(mockRequest, mockResponse));
-	}
-
-	@Test
-	public void handleRequestNoProductionSSLEmailHeaderShouldReturnNull() throws Exception{
-		SSLHeadersCertificateProcessor processor = mock(SSLHeadersCertificateProcessor.class);
-		when(processor.validateAndExtractEmailAddressForProductionGatewayCertificate(null)).thenReturn(null);
-		when(PhaseInterceptorChain.getCurrentMessage()).thenReturn(mockMessage);
-		
-		setInternalState(authRequest, "headersProcessor", processor);
-		when(mockMessage.get(Message.REQUEST_URL)).thenReturn("http://www.bbc.co.uk");
-
-		// assertNull(authRequest.filter(mockRequest, mockResponse));
-	}
+//	@Test
+//	public void handleRequestNoProductionSSLEmailHeaderShouldReturnNull() throws Exception{
+//		SSLHeadersCertificateProcessor processor = mock(SSLHeadersCertificateProcessor.class);
+//		when(processor.validateAndExtractEmailAddressForProductionGatewayCertificate(null)).thenReturn(null);
+//		when(PhaseInterceptorChain.getCurrentMessage()).thenReturn(mockMessage);
+//
+//		setInternalState(authRequest, "headersProcessor", processor);
+//		when(mockMessage.get(Message.REQUEST_URL)).thenReturn("http://www.bbc.co.uk");
+//
+//		assertNull(authRequest.filter(mockRequest, mockResponse));
+//	}
 
 	private HttpRequestProductionGatewayCertificateAuth createHttpRequestProductionGatewayCertificateAuth() throws Exception {
 		HttpRequestProductionGatewayCertificateAuth authRequest = new HttpRequestProductionGatewayCertificateAuth();
