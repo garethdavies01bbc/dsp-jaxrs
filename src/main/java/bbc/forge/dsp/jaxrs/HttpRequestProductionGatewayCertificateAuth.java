@@ -3,10 +3,13 @@ package bbc.forge.dsp.jaxrs;
 import java.util.List;
 import java.util.Map;
 
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerResponseContext;
 import javax.ws.rs.core.Response;
 
 import org.apache.cxf.jaxrs.model.ClassResourceInfo;
 import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.apache.log4j.Logger;
 
 import bbc.forge.dsp.common.security.SSLCertificateParsingException;
@@ -27,8 +30,12 @@ public class HttpRequestProductionGatewayCertificateAuth extends AbstractHttpReq
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public Response handleRequest(Message message, ClassResourceInfo info) {
+	public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) {
+
+		Message message = PhaseInterceptorChain.getCurrentMessage();
+
 		String email = null;
+
 		try {
 			email = headersProcessor.validateAndExtractEmailAddressForProductionGatewayCertificate(
 					(Map<String, List<String>>)message.get(Message.PROTOCOL_HEADERS));
@@ -36,7 +43,6 @@ public class HttpRequestProductionGatewayCertificateAuth extends AbstractHttpReq
 			if (email == null) {
 				if(LOG.isInfoEnabled())
 					LOG.info("Access granted. No certificate indicates non-production gateway");
-				return null;
 			}
 
 			if (!whitelist.isUserAuthorised(email)) {
@@ -45,13 +51,14 @@ public class HttpRequestProductionGatewayCertificateAuth extends AbstractHttpReq
 							"" + email + " for: " + getRequestInfo(message));
 				} else {
 					LOG.error("Access denied to: " + email + " for: " + getRequestInfo(message));
-					return Response.status(403).build();
+					containerResponseContext.setStatus(403);
 				}
 			}
+
 		} catch (SSLCertificateParsingException e) {
 			LOG.warn("Certificate validation failed.", e);
 
-			if (active)	return Response.status(403).build();
+			if (active)	containerResponseContext.setStatus(403);
 			else {
 				if(LOG.isDebugEnabled())
 					LOG.debug("Authorisation disabled, but certificate validation failed.");
@@ -60,9 +67,5 @@ public class HttpRequestProductionGatewayCertificateAuth extends AbstractHttpReq
 
 		if(LOG.isDebugEnabled())
 			LOG.debug("Access granted to: " + email + " for: "+ getRequestInfo(message));
-
-		return null;
 	}
-
-	
 }
