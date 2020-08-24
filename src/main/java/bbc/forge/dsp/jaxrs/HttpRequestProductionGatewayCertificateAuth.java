@@ -36,7 +36,9 @@ public class HttpRequestProductionGatewayCertificateAuth extends AbstractHttpReq
                     (Map<String, List<String>>) message.get(Message.PROTOCOL_HEADERS));
 
             if (email == null) {
-                if (LOG.isInfoEnabled()) LOG.info("Access granted. No certificate indicates non-production gateway");
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Access granted. No certificate indicates non-production gateway");
+                }
             } else {
                 if (!whitelist.isUserAuthorised(email)) {
                     if (!active) {
@@ -60,6 +62,8 @@ public class HttpRequestProductionGatewayCertificateAuth extends AbstractHttpReq
             }
         }
 
-        if (LOG.isDebugEnabled()) LOG.debug("Access granted to: " + email + " for: " + getRequestInfo(message));
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Access granted to: " + email + " for: " + getRequestInfo(message));
+        }
     }
 }
