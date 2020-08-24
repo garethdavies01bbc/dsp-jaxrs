@@ -114,37 +114,37 @@
 			<artifactId>jsr311-api</artifactId>
 			<version>1.0</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.apache.cxf</groupId>-->
-<!--			<artifactId>cxf-bundle-jaxrs</artifactId>-->
-<!--			<version>2.4.0</version>-->
-<!--			<exclusions>-->
-<!--				<exclusion>-->
-<!--					<groupId>org.apache.cxf.phase</groupId>-->
-<!--					<artifactId>PhaseInterceptorChain</artifactId>-->
-<!--				</exclusion>-->
-<!--				<exclusion>-->
-<!--					<groupId>org.eclipse.jetty</groupId>-->
-<!--					<artifactId>jetty-server</artifactId>-->
-<!--				</exclusion>-->
-<!--				<exclusion>-->
-<!--					<artifactId>spring-beans</artifactId>-->
-<!--					<groupId>org.springframework</groupId>-->
-<!--				</exclusion>-->
-<!--				<exclusion>-->
-<!--					<artifactId>spring-asm</artifactId>-->
-<!--					<groupId>org.springframework</groupId>-->
-<!--				</exclusion>-->
-<!--				<exclusion>-->
-<!--					<artifactId>spring-aop</artifactId>-->
-<!--					<groupId>org.springframework</groupId>-->
-<!--				</exclusion>-->
-<!--				<exclusion>-->
-<!--					<artifactId>spring-expression</artifactId>-->
-<!--					<groupId>org.springframework</groupId>-->
-<!--				</exclusion>-->
-<!--			</exclusions>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-bundle-jaxrs</artifactId>
+			<version>2.4.0</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.cxf.phase</groupId>
+					<artifactId>PhaseInterceptorChain</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.eclipse.jetty</groupId>
+					<artifactId>jetty-server</artifactId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-beans</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-asm</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-expression</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-rs-service-description -->
 		<dependency>
