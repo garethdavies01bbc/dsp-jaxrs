@@ -6,19 +6,19 @@ The basic idea for this work is to remove the old dependency cxf-bundle-jaxrs an
 
 So far these classes have been migrated along with the accompanying tests:
 
-HttpRequestMonitor  - now uses ContainerRequestContext and ContainerResponseContext.
-HttpResponseMonitor - now uses ContainerRequestFilter.
-MemcacheStatusFilter - now uses ContaineRequest/ResponseFilter and ContainerRequest/ResponseContext.
-Caching500ErrorsForARevalidationPreventer - now uses ContainerRequest/ResponseFilter & ContainerRequest/ResponseContext
-AbstractHttpRequestCertificateAuth - now uses ContainerRequestFilter.
-AuditLogger - now uses ContainerRequestFilter & ContainerRequestContext.
-HappyMetricFilter - now uses ContainerResponseFilter & ContainerResponseContext.
-HttpResponseVersionProvider - now uses ContainerRequestContext & ContainerResponseContext.
+* HttpRequestMonitor  - now uses ContainerRequestContext and ContainerResponseContext.
+* HttpResponseMonitor - now uses ContainerRequestFilter.
+* MemcacheStatusFilter - now uses ContaineRequest/ResponseFilter and ContainerRequest/ResponseContext.
+* Caching500ErrorsForARevalidationPreventer - now uses ContainerRequest/ResponseFilter & ContainerRequest/ResponseContext
+* AbstractHttpRequestCertificateAuth - now uses ContainerRequestFilter.
+* HttpRequestProductionGatewayCertificateAuth - now uses PhaseInterceptorChain.
+* AuditLogger - now uses ContainerRequestFilter & ContainerRequestContext.
+* HappyMetricFilter - now uses ContainerResponseFilter & ContainerResponseContext.
+* HttpResponseVersionProvider - now uses ContainerRequestContext & ContainerResponseContext.
 
 Classes still to migrate:
 
 - CustomWADLGenerator
-- HttpRequestProductionGatewayCertificateAuth
 
 There is a new dependency cxf-rt-frontend-jaxrs 3.2.0 which handles the Monitor classes mentions above.
 
