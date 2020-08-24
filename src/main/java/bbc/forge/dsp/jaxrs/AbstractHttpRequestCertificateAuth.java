@@ -1,15 +1,14 @@
 package bbc.forge.dsp.jaxrs;
 
-import org.apache.cxf.message.Message;
-
 import bbc.forge.dsp.common.security.EnvironmentSpecificFileLoader;
 import bbc.forge.dsp.common.security.SSLHeadersCertificateProcessor;
 import bbc.forge.dsp.common.security.Whitelist;
 import bbc.forge.dsp.common.security.WhitelistReader;
+import org.apache.cxf.message.Message;
 
-import javax.ws.rs.container.ContainerResponseFilter;
+import javax.ws.rs.container.ContainerRequestFilter;
 
-public abstract class AbstractHttpRequestCertificateAuth implements ContainerResponseFilter {
+public abstract class AbstractHttpRequestCertificateAuth implements ContainerRequestFilter {
 
 	private static final int DEFAULT_REFRESH_TIME_IN_MINUTES = 5;
 	protected int refreshTimeInMinutes = DEFAULT_REFRESH_TIME_IN_MINUTES;

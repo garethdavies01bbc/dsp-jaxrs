@@ -1,7 +1,6 @@
 package bbc.forge.dsp.jaxrs;
 
 import bbc.forge.dsp.mockito.MockitoTestBase;
-import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.mockito.Mock;
 

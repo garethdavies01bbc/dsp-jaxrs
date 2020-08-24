@@ -1,18 +1,14 @@
 package bbc.forge.dsp.jaxrs;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.core.Response;
-
-import org.apache.cxf.jaxrs.model.ClassResourceInfo;
+import bbc.forge.dsp.common.security.SSLCertificateParsingException;
 import org.apache.cxf.message.Message;
 import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.apache.log4j.Logger;
 
-import bbc.forge.dsp.common.security.SSLCertificateParsingException;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This filter will authorise access to production gateway applications only to people:
@@ -20,52 +16,54 @@ import bbc.forge.dsp.common.security.SSLCertificateParsingException;
  * - who have a valid BBC certificate.
  * - are listed in the list of the users authorised for this application
  * - The filter can be disabled (active=false) for sandbox and integration.
- *
+ * <p>
  * Most of the time, you should enumerate the list of authorised users
  * in the /etc/bbc/authorisation/your-application/ folder.
  */
 public class HttpRequestProductionGatewayCertificateAuth extends AbstractHttpRequestCertificateAuth {
 
-	private Logger LOG = Logger.getLogger(this.getClass());
+    private final Logger LOG = Logger.getLogger(this.getClass());
 
-	@Override
-	@SuppressWarnings("unchecked")
-	public void filter(ContainerRequestContext containerRequestContext, ContainerResponseContext containerResponseContext) {
+    @Override
+    @SuppressWarnings("unchecked")
+    public void filter(ContainerRequestContext requestContext) {
+        Message message = PhaseInterceptorChain.getCurrentMessage();
 
-		Message message = PhaseInterceptorChain.getCurrentMessage();
+        String email = null;
 
-		String email = null;
+        try {
+            email = headersProcessor.validateAndExtractEmailAddressForProductionGatewayCertificate(
+                    (Map<String, List<String>>) message.get(Message.PROTOCOL_HEADERS));
 
-		try {
-			email = headersProcessor.validateAndExtractEmailAddressForProductionGatewayCertificate(
-					(Map<String, List<String>>)message.get(Message.PROTOCOL_HEADERS));
+            if (email == null) {
+                if (LOG.isInfoEnabled()) {
+                    LOG.info("Access granted. No certificate indicates non-production gateway");
+                }
+            } else {
+                if (!whitelist.isUserAuthorised(email)) {
+                    if (!active) {
+                        LOG.error("Authorisation disabled. Access would have been denied to: " +
+                                "" + email + " for: " + getRequestInfo(message));
+                    } else {
+                        LOG.error("Access denied to: " + email + " for: " + getRequestInfo(message));
+                        requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+                        return;
+                    }
+                }
+            }
+        } catch (SSLCertificateParsingException e) {
+            LOG.warn("Certificate validation failed.", e);
+            if (active) {
+                requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+                return;
+            } else {
+                if (LOG.isDebugEnabled())
+                    LOG.debug("Authorisation disabled, but certificate validation failed.");
+            }
+        }
 
-			if (email == null) {
-				if(LOG.isInfoEnabled())
-					LOG.info("Access granted. No certificate indicates non-production gateway");
-			}
-
-			if (!whitelist.isUserAuthorised(email)) {
-				if (!active) {
-					LOG.error("Authorisation disabled. Access would have been denied to: " +
-							"" + email + " for: " + getRequestInfo(message));
-				} else {
-					LOG.error("Access denied to: " + email + " for: " + getRequestInfo(message));
-					containerResponseContext.setStatus(403);
-				}
-			}
-
-		} catch (SSLCertificateParsingException e) {
-			LOG.warn("Certificate validation failed.", e);
-
-			if (active)	containerResponseContext.setStatus(403);
-			else {
-				if(LOG.isDebugEnabled())
-					LOG.debug("Authorisation disabled, but certificate validation failed.");
-			}
-		}
-
-		if(LOG.isDebugEnabled())
-			LOG.debug("Access granted to: " + email + " for: "+ getRequestInfo(message));
-	}
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Access granted to: " + email + " for: " + getRequestInfo(message));
+        }
+    }
 }
