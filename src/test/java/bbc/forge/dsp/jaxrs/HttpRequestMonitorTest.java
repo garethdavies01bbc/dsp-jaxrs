@@ -23,8 +23,7 @@ public class HttpRequestMonitorTest extends MockitoTestBase {
 
 	@Mock Message mockMessage;
 
-    @Mock
-    private ContainerRequestContext mockRequest;
+    @Mock private ContainerRequestContext mockRequest;
 
 	@Test
 	public void anyRequestIncrementsTheRequestCounter() {

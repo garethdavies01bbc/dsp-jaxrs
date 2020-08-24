@@ -13,7 +13,7 @@ Caching500ErrorsForARevalidationPreventer - now uses ContainerRequest/ResponseFi
 AbstractHttpRequestCertificateAuth - now uses ContainerRequestFilter.
 AuditLogger - now uses ContainerRequestFilter & ContainerRequestContext.
 HappyMetricFilter - now uses ContainerResponseFilter & ContainerResponseContext.
-HttpResponseVersionProvider - now uses 
+HttpResponseVersionProvider - now uses ContainerRequestContext & ContainerResponseContext.
 
 Classes still to migrate:
 

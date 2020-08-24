@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.xml.sax.SAXException;
@@ -21,8 +20,6 @@ import com.meterware.httpunit.WebConversation;
 import com.meterware.httpunit.WebResponse;
 
 public class ResponseHandlingIntegrationTest extends MockitoTestBase {
-
-	protected Logger LOG = Logger.getLogger(this.getClass());
 
 	private static final String ROOT_URL = "http://localhost:19348/jaxrs-test/";
 
