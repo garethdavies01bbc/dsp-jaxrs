@@ -25,8 +25,7 @@ public class AuditLoggerTest {
 
     private AuditLogger auditLogger;
 
-    @Mock
-    private ContainerRequestContext mockRequest;
+    @Mock private ContainerRequestContext mockRequest;
 
     @Mock Logger logger;
 

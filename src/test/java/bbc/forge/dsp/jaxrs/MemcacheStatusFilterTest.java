@@ -16,13 +16,11 @@ import bbc.forge.dsp.common.AsynchronousListenerWrapper;
 @RunWith(MockitoJUnitRunner.class)
 public class MemcacheStatusFilterTest {
 
+    @Mock private AsynchronousListenerWrapper mockMemcachedListener;
+    @Mock private ContainerResponseContext mockResponse;
+    @Mock private ContainerRequestContext mockRequest;
+
     private MemcacheStatusFilter memcacheStatusFilter;
-    @Mock
-    private AsynchronousListenerWrapper mockMemcachedListener;
-    @Mock
-    private ContainerResponseContext mockResponse;
-    @Mock
-    private ContainerRequestContext mockRequest;
 
     @Before
     public void setUp() {
