@@ -47,6 +47,7 @@ public class CustomWADLGenerator extends WadlGenerator implements ContainerRespo
 		if (!ui.getQueryParameters().containsKey("html")) {
 			Response response = Response.status(Response.Status.BAD_REQUEST).build();
 			containerRequestContext.abortWith(response);
+			return;
 		}
 
 		String wadl = containerRequestContext.getEntityStream().toString();
