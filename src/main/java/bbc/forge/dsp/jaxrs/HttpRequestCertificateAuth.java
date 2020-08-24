@@ -1,17 +1,15 @@
 package bbc.forge.dsp.jaxrs;
 
-import java.util.List;
-import java.util.Map;
-
-import javax.ws.rs.core.Response;
-
-import org.apache.cxf.jaxrs.model.ClassResourceInfo;
+import bbc.forge.dsp.common.security.SSLCertificateParsingException;
+import com.google.common.collect.Lists;
 import org.apache.cxf.message.Message;
+import org.apache.cxf.phase.PhaseInterceptorChain;
 import org.apache.log4j.Logger;
 
-import bbc.forge.dsp.common.security.SSLCertificateParsingException;
-
-import com.google.common.collect.Lists;
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This filter will authorise access only to people:
@@ -24,20 +22,21 @@ import com.google.common.collect.Lists;
  */
 public class HttpRequestCertificateAuth extends AbstractHttpRequestCertificateAuth {
 
-	private Logger LOG = Logger.getLogger(this.getClass());
+	private final Logger LOG = Logger.getLogger(this.getClass());
 	
 	private List<String> whiteOuList = Lists.newArrayList();
 
 	@Override
-	public Response handleRequest(Message message, ClassResourceInfo info) {
+	public void filter(ContainerRequestContext requestContext) {
+
+		Message message = PhaseInterceptorChain.getCurrentMessage();
+LOG.info("message:"+message);
 		try {
 			@SuppressWarnings("unchecked")
 			String ou = headersProcessor.validateAndExtractOrganisationUnit(
 					(Map<String, List<String>>)message.get(Message.PROTOCOL_HEADERS));
 			if (whiteOuList.contains(ou)) {
-				if(LOG.isInfoEnabled())
-					LOG.info("Access granted for organisational unit: "+ ou);
-				return null;
+				if(LOG.isInfoEnabled()) LOG.info("Access granted for organisational unit: "+ ou);
 			}
 
 			@SuppressWarnings("unchecked")
@@ -45,24 +44,28 @@ public class HttpRequestCertificateAuth extends AbstractHttpRequestCertificateAu
 					(Map<String, List<String>>)message.get(Message.PROTOCOL_HEADERS));
 
 			if (email == null) {
-				if(LOG.isInfoEnabled())
-					LOG.info("Access granted. No certificate indicates non-SSL gateway");
-				return null;
+				if(LOG.isInfoEnabled()) LOG.info("Access granted. No certificate indicates non-SSL gateway");
 			}
-
-			if (!whitelist.isUserAuthorised(email)) {
-				if (!active) {
-					LOG.error("Authorisation disabled. Access would have been denied to: " +
-							"" + email + " for: " + getRequestInfo(message));
-				} else {
-					LOG.error("Access denied to: " + email + " for: " + getRequestInfo(message));
-					return Response.status(403).build();
+			else {
+				if (!whitelist.isUserAuthorised(email)) {
+					if (!active) {
+						LOG.error("Authorisation disabled. Access would have been denied to: " +
+								"" + email + " for: " + getRequestInfo(message));
+					} else {
+						LOG.error("Access denied to: " + email + " for: " + getRequestInfo(message));
+						requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+						return;
+					}
 				}
 			}
 		} catch (SSLCertificateParsingException e) {
 			LOG.warn("Certificate validation failed.", e);
 
-			if (active)	return Response.status(403).build();
+			if (active) {
+				requestContext.abortWith(Response.status(Response.Status.FORBIDDEN).build());
+				return;
+			}
+
 			else {
 				if(LOG.isDebugEnabled())
 					LOG.debug("Authorisation disabled, but certificate validation failed.");
@@ -71,8 +74,6 @@ public class HttpRequestCertificateAuth extends AbstractHttpRequestCertificateAu
 
 		if(LOG.isDebugEnabled())
 			LOG.debug("Access granted");
-
-		return null;
 	}
 
 	public void setWhiteOuList(List<String> whiteOuList) {
