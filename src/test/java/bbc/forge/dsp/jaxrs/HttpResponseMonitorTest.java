@@ -27,20 +27,13 @@ import static org.mockito.Mockito.when;
 @PrepareForTest(PhaseInterceptorChain.class)
 public class HttpResponseMonitorTest extends MockitoTestBase {
 
-    @Mock
-    private ContainerResponseContext mockResponse;
-    @Mock
-    private Message mockMessage;
-    @Mock
-    private Exchange mockExchange;
-    @Mock
-    private OperationResourceInfo mockOperationResourceInfo;
-    @Mock
-    private ClassResourceInfo mockClassResourceInfo;
-    @Mock
-    private Path mockJaxrsPath;
-    @Mock
-    private Configuration mockDynamicConfig;
+    @Mock private ContainerResponseContext mockResponse;
+    @Mock private Message mockMessage;
+    @Mock private Exchange mockExchange;
+    @Mock private OperationResourceInfo mockOperationResourceInfo;
+    @Mock private ClassResourceInfo mockClassResourceInfo;
+    @Mock private Path mockJaxrsPath;
+    @Mock private Configuration mockDynamicConfig;
 
     private HttpResponseMonitor monitor;
 

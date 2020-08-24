@@ -16,11 +16,9 @@ public class HttpResponseVersionProviderTest extends MockitoTestBase {
 
 	private static final String API_VERSION_NUMBER = "1.1.11";
 
-	@Mock
-	private ContainerResponseContext mockResponse;
+	@Mock private ContainerResponseContext mockResponse;
 
-	@Mock
-	final MultivaluedMap<String, Object> mockHeadersMap = mock(MultivaluedMap.class);
+	@Mock final MultivaluedMap<String, Object> mockHeadersMap = mock(MultivaluedMap.class);
 
 	@Test
 	public void handleResponseShouldAddXAPIVersionHeader() {

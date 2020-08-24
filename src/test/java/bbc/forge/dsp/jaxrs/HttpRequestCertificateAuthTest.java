@@ -28,7 +28,6 @@ public class HttpRequestCertificateAuthTest extends MockitoTestBase {
 	@Mock ClassResourceInfo info;
 	@Mock Message message;
 	@Mock Whitelist whitelist;
-	@Mock Logger LOG;
 
 	@Test
 	public void handleRequest_if_authorised_should_return_null() throws Exception{

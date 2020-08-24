@@ -23,7 +23,6 @@ import bbc.forge.dsp.mockito.MockitoTestBase;
 
 import com.google.common.collect.Maps;
 
-
 public class FlagpoleInterceptorTest extends MockitoTestBase {
 
 	@Mock Message message;
