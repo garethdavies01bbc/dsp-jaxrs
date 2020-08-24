@@ -1,6 +1,5 @@
 package bbc.forge.dsp.jaxrs;
 
-import org.apache.cxf.jaxrs.ext.RequestHandler;
 import org.apache.cxf.message.Message;
 
 import bbc.forge.dsp.common.security.EnvironmentSpecificFileLoader;
