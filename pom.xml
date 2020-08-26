@@ -116,7 +116,6 @@
 			<artifactId>cxf-rt-rs-service-description</artifactId>
 			<version>3.3.7</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.apache.cxf</groupId>
 			<artifactId>cxf-rt-frontend-jaxrs</artifactId>
@@ -131,6 +130,20 @@
 	    </dependency>
 
 		<!-- Dependencies for testing only -->
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-web -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>4.3.20.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.springframework/spring-core -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>4.3.20.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.httpunit</groupId>
 			<artifactId>httpunit</artifactId>
